@@ -1,5 +1,5 @@
 
-# Matrix Inverse
+# System of Equations
 
 ![System of Equations Logo](https://github.com/ThomIves/SystemOfEquations/blob/master/System_of_Equations_Logo.png)
 > A step by step explanation of how to solve for a system of equations using jupyter notebooks and python scripts.

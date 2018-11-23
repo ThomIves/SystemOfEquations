@@ -7,7 +7,7 @@ def check_squareness(A):
         :param A: The matrix to be checked.
     """
     if len(A) != len(A[0]):
-        raise ArithmeticError("Matrix must be square to inverse.")
+        raise ArithmeticError("Matrix must be square for current methods.")
 
 def check_non_singular(A):
     """
@@ -169,10 +169,10 @@ def check_matrix_equality(A,B, tol=None):
 
 def solve_equations(A, B, tol=None):
     """
-    Returns the inverse of the passed in matrix.
-        :param A: The matrix to be inversed
+    Returns the solution of a system of equations in matrix format.
+        :param A: The system matrix
 
-        :return: The inverse of the matrix A
+        :return: The solution X where AX = B
     """
     # Section 1: Make sure A can be inverted.
     check_squareness(A)
@@ -199,8 +199,8 @@ def solve_equations(A, B, tol=None):
                 AM[i][j] = AM[i][j] - crScaler * AM[fd][j]
             BM[i][0] = BM[i][0] - crScaler * BM[fd][0]
 
-    # Section 4: Make sure that IM is an inverse of A within the specified tolerance
+    # Section 4: Make sure that BM is the solution for X
     if check_matrix_equality(B,matrix_multiply(A,BM),tol):
         return BM
     else:
-        raise ArithmeticError("Matrix inverse out of tolerance.")
+        raise ArithmeticError("Solution for X out of tolerance.")

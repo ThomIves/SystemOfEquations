@@ -175,12 +175,49 @@ def solve_equations(A, B, tol=None):
 
     # Section 2: Make copies of A & I, AM & IM, to use for row operations
     n = len(A)
+    # because of the need to reorder rows to avoid zero diagonal entries, we could just fill AM and BM with zero matrix here.
     AM = copy_matrix(A)
     I = identity_matrix(n)
     BM = copy_matrix(B)
 
     # Section 3: Perform row operations
     indices = list(range(n)) # to allow flexible row referencing ***
+    
+    # make sure diagonal has non-zero entries
+    # make a list of the legal positions for each row (such that the element in the diagonal is non-zero)
+    # do a depth first search to find a valid row ordering with non-zero diagonal entries,
+    # which is guaranteed by non-singularity
+    legal_row_positions = [filter(lambda y: tol == None and AM[x][y] != 0 or round(AM[x][y], tol) != 0, range(n))
+                           for x in range(n)]
+    row_choices = [-1] # this is needed to initialize the search properly.
+    rows_taken = set()
+    # depth first search
+    while True:
+        i = len(row_choices) - 1
+        if row_choices[i] > -1:
+            rows_taken.remove(legal_row_positions[i][row_choices[i]])
+        row_choices[i] += 1
+        while row_choices[i] < len(legal_row_positions[i]):
+            if legal_row_positions[i][row_choices[i]] not in rows_taken:
+                break
+            row_choices[i] += 1
+        if row_choices[i] < len(legal_row_positions[i]):
+            rows_taken.add(legal_row_positions[i][row_choices[i]])
+            if len(row_choices) == n: # finished
+                break
+            row_choices.append(-1) # descend
+        else:
+            row_choices.pop() # ascend
+            if len(row_choices) == 0: # failure
+                raise ValueError("Unexpectedly could not find a way to order rows with nonzero diagonal entries.")
+    row_map = [legal_row_positions[i][row_choices[i]] for i in range(n)]
+    # use the original (uncopied) arrays to rebuild the copies in the new order.
+    for i in range(n):
+        x = row_map[i]
+        for j in range(n):
+            AM[i][j] = A[x][j]
+        BM[i] = B[x]
+               
     for fd in range(n): # fd stands for focus diagonal
         fdScaler = 1.0 / AM[fd][fd]
         # FIRST: scale fd row with fd inverse. 

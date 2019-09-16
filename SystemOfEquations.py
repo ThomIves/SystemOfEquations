@@ -92,10 +92,10 @@ def matrix_multiply(A,B):
 # In[33]:
 
 
-A = [[5.,4.,3.,2.,1.],[4.,3.,2.,1.,5.],[3.,2.,9.,5.,4.],[2.,1.,5.,4.,3.],[1.,2.,3.,4.,5.]]
-B = [[48],[38],[64],[43],[42]]
-# A = [[5.,3.,1.],[3.,9.,4.],[1.,3.,5.]]
-# B = [[9.0],[16.0],[9.0]]
+# A = [[5.,4.,3.,2.,1.],[4.,3.,2.,1.,5.],[3.,2.,9.,5.,4.],[2.,1.,5.,4.,3.],[1.,2.,3.,4.,5.]]
+# B = [[48],[38],[64],[43],[42]]
+A = [[5.,3.,1.],[3.,9.,4.],[1.,3.,5.]]
+B = [[9.0],[16.0],[9.0]]
 print_matrices('','A Matrix', A, 'B Matrix', B)
 
 
@@ -126,7 +126,7 @@ print()
 # Run this cell then the next for fd = 0, 1, 2, 3, and 4 for a 5x5 matrix. 
 #      Then check for identity matrix in last cell.
 
-fd = 4 # fd stands for focus diagonal OR the current diagonal
+fd = 1 # fd stands for focus diagonal OR the current diagonal
 fdScaler = 1. / AM[fd][fd]
 
 for j in range(n): # using j to indicate cycling thru columns
